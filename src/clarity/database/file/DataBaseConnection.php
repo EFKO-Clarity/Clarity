@@ -10,7 +10,7 @@ use RuntimeException;
 use JsonException;
 use InvalidArgumentException;
 
-final class DataBaseConnection implements DataBaseConnectionInterface
+class DataBaseConnection implements DataBaseConnectionInterface
 {
     private string $directory;
     private ?int $lastInsertId = null;
@@ -288,10 +288,35 @@ final class DataBaseConnection implements DataBaseConnectionInterface
             return $rows;
         }
 
+        // Если данные — это простой список
+        if (is_string($rows[0] ?? null) === true) {
+            return array_values(array_filter(
+                $rows,
+                fn($item) => $this->matchesSimpleValue($item, $clauses)
+            ));
+        }
+
         return array_values(array_filter(
             $rows,
             fn($row) => $this->matchesMultiple($row, $clauses)
         ));
+    }
+
+    /**
+     * @param mixed $value
+     * @param array $clauses
+     * @return bool
+     */
+    private function matchesSimpleValue(mixed $value, array $clauses): bool
+    {
+        foreach ($clauses as $clause) {
+            foreach ($clause as $col => $val) {
+                if ((string)$value !== (string)$val) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

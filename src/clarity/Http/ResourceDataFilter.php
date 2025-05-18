@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace framework\clarity\Http;
 
 use framework\clarity\database\interfaces\DataBaseConnectionInterface;
-use framework\clarity\database\interfaces\MariadbQueryBuilderInterface;
+use framework\clarity\database\interfaces\QueryBuilderInterface;
 use framework\clarity\Http\interfaces\ResourceDataFilterInterface;
 use InvalidArgumentException;
 use RuntimeException;
@@ -19,7 +19,7 @@ class ResourceDataFilter implements ResourceDataFilterInterface
 
     public function __construct(
         private readonly DataBaseConnectionInterface $connection,
-        private readonly MariadbQueryBuilderInterface $queryBuilder
+        private readonly QueryBuilderInterface $queryBuilder
     ) {}
 
     /**
@@ -92,9 +92,9 @@ class ResourceDataFilter implements ResourceDataFilterInterface
     }
 
     /**
-     * @return MariadbQueryBuilderInterface
+     * @return QueryBuilderInterface
      */
-    private function buildBaseQuery(): MariadbQueryBuilderInterface
+    private function buildBaseQuery(): QueryBuilderInterface
     {
         return $this->queryBuilder
             ->select($this->getSelectFields())

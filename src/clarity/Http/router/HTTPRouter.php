@@ -238,7 +238,9 @@ class HTTPRouter implements HTTPRouterInterface, MiddlewareAssignable
 
         $controller = $this->container->build($route->handler);
 
-        $controller->setContainer($this->container);
+        if (method_exists($controller, 'setContainer') === true) {
+            $controller->setContainer($this->container);
+        }
 
         $action = $route->action;
 

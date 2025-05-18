@@ -8,7 +8,7 @@ use framework\clarity\Http\interfaces\ResourceWriterInterface;
 use InvalidArgumentException;
 use RuntimeException;
 
-final class JsonResourceWriter implements ResourceWriterInterface
+class JsonResourceWriter implements ResourceWriterInterface
 {
     private string $resourceName;
 
